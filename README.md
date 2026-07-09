@@ -2,13 +2,8 @@
 
 <img width="296" height="323" alt="image" src="https://github.com/user-attachments/assets/7be196d0-976b-4e33-b3d0-2f1eafeb2970" /> <img width="290" height="320" alt="image" src="https://github.com/user-attachments/assets/8cbf438d-9498-464c-873b-18a9a1380bc8" />
 
-
-
-
-> Windows 桌面硬件监控小组件，实时显示 CPU、GPU、内存、磁盘的使用率和温度。
-> A sleek desktop widget for real-time hardware monitoring on Windows.
-
----
+Windows 桌面硬件监控小组件，实时显示 CPU、GPU、内存、磁盘的使用率和温度。
+A sleek desktop widget for real-time hardware monitoring on Windows.
 
 ## 📖 中文 🇨🇳
 
