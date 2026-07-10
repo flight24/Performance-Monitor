@@ -1,0 +1,11 @@
+node_modules/
+dist/
+python/dist/
+python/build/
+python/tkinter/build/
+python/tkinter/dist/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+Thumbs.db
