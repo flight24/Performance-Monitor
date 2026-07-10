@@ -1,10 +1,9 @@
 # 🖥️ 性能监视器 Performance Monitor
 
-<img width="580" height="634" alt="image" src="https://github.com/user-attachments/assets/656d2913-723e-4ef4-8b5f-829a6df61191" />
-
 Windows 桌面硬件监控小组件，实时显示 CPU、GPU、内存、磁盘的使用率和温度。
 A sleek desktop widget for real-time hardware monitoring on Windows.
 
+<img width="580" height="634" alt="image" src="https://github.com/user-attachments/assets/656d2913-723e-4ef4-8b5f-829a6df61191" />
 
 **性能监视器** — 轻量级桌面硬件监控工具，实时掌握你的电脑状态。
 
