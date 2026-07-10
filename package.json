@@ -17,7 +17,6 @@
     "files": [
       "app/main.js",
       "app/preload.js",
-      "app/set-admin.js",
       "package.json"
     ],
     "extraResources": [
@@ -37,7 +36,8 @@
       "signAndEditExecutable": false
     },
     "portable": {
-      "artifactName": "系统监控.exe"
+      "artifactName": "monitor-tmp.exe",
+      "requestExecutionLevel": "admin"
     },
     "asar": false
   },

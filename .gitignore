@@ -7,5 +7,7 @@ python/tkinter/dist/
 __pycache__/
 *.pyc
 *.pyo
+*.exe
+debug_dump.py
 .DS_Store
 Thumbs.db
