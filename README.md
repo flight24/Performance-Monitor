@@ -13,7 +13,7 @@ A sleek desktop widget for real-time hardware monitoring on Windows.
 
 | 指标 📊 | 来源 🔧 |
 |---|---|
-| CPU 使用率 / 频率 / 温度 🔥 | psutil / PDH / WMI / LibreHardwareMonitor |
+| CPU 使用率 / 频率 / 温度 / 电压🔥 | psutil / PDH / WMI / LibreHardwareMonitor |
 | GPU 使用率 / 温度 🎮 | GPUtil (NVIDIA) → PDH → LHM → WMI |
 | 内存使用率 🧠 | psutil |
 | 磁盘使用率 / I/O 💾 | psutil |
@@ -58,7 +58,7 @@ npm run build          # electron-builder 打包为 exe
 
 | Metric 📊 | Source 🔧 |
 |---|---|
-| CPU Usage / Frequency / Temperature 🔥 | psutil / PDH / WMI / LibreHardwareMonitor |
+| CPU Usage / Frequency / Temperature / Voltage🔥 | psutil / PDH / WMI / LibreHardwareMonitor |
 | GPU Usage / Temperature 🎮 | GPUtil (NVIDIA) → PDH → LHM → WMI |
 | Memory Usage 🧠 | psutil |
 | Disk Usage / I/O 💾 | psutil |
