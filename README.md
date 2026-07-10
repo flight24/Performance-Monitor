@@ -4,7 +4,7 @@ Windows 桌面硬件监控小组件，实时显示 CPU、GPU、内存、磁盘�
 A sleek desktop widget for real-time hardware monitoring on Windows.
 
 
-<img width="580" height="676" alt="image" src="https://github.com/user-attachments/assets/46a68e42-632b-4fb6-96b4-8904a5edbd5e" />
+<img width="572" height="678" alt="image" src="https://github.com/user-attachments/assets/a2ed1912-9314-4865-8ffe-3c3cc84956dc" />
 
 
 
