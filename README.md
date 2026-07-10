@@ -1,6 +1,6 @@
 # 🖥️ 性能监视器 Performance Monitor
 
-Windows 桌面硬件监控小组件，实时显示 CPU、GPU、内存、磁盘的使用率和温度。
+Windows 桌面硬件监控小组件，实时显示 CPU、GPU、内存、磁盘、网络的各项参数。
 A sleek desktop widget for real-time hardware monitoring on Windows.
 
 
