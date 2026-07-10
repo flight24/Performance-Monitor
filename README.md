@@ -1,7 +1,6 @@
 # 🖥️ 性能监视器 Performance Monitor
 
-<img width="296" height="323" alt="image" src="https://github.com/user-attachments/assets/7be196d0-976b-4e33-b3d0-2f1eafeb2970" /> <img width="294" height="324" alt="image" src="https://github.com/user-attachments/assets/704568db-f531-4491-8226-f9fb28edfaa5" />
-
+<img width="289" height="316" alt="image" src="https://github.com/user-attachments/assets/37599d46-8cc6-4ec6-b8df-97117f713647" /> <img width="590" height="654" alt="image" src="https://github.com/user-attachments/assets/fde707ce-8227-4d3f-80c5-5ec7c363be1c" />
 
 Windows 桌面硬件监控小组件，实时显示 CPU、GPU、内存、磁盘的使用率和温度。
 A sleek desktop widget for real-time hardware monitoring on Windows.
@@ -13,8 +12,8 @@ A sleek desktop widget for real-time hardware monitoring on Windows.
 
 | 指标 📊 | 来源 🔧 |
 |---|---|
-| CPU 使用率 / 频率 / 温度 / 电压🔥 | psutil / PDH / WMI / LibreHardwareMonitor |
-| GPU 使用率 / 温度 🎮 | GPUtil (NVIDIA) → PDH → LHM → WMI |
+| CPU 使用率 / 频率 / 温度 / 电压 🔥 | psutil / PDH / WMI / LibreHardwareMonitor |
+| GPU 使用率 / 温度 / 显存 🎮 | GPUtil (NVIDIA) → PDH → LHM → WMI |
 | 内存使用率 🧠 | psutil |
 | 磁盘使用率 / I/O 💾 | psutil |
 
@@ -58,8 +57,8 @@ npm run build          # electron-builder 打包为 exe
 
 | Metric 📊 | Source 🔧 |
 |---|---|
-| CPU Usage / Frequency / Temperature / Voltage🔥 | psutil / PDH / WMI / LibreHardwareMonitor |
-| GPU Usage / Temperature 🎮 | GPUtil (NVIDIA) → PDH → LHM → WMI |
+| CPU Usage / Frequency / Temperature / Voltage 🔥 | psutil / PDH / WMI / LibreHardwareMonitor |
+| GPU Usage / Temperature / VRAM 🎮 | GPUtil (NVIDIA) → PDH → LHM → WMI |
 | Memory Usage 🧠 | psutil |
 | Disk Usage / I/O 💾 | psutil |
 
