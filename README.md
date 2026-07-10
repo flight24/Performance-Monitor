@@ -34,7 +34,12 @@ npm run build:backend  # PyInstaller 打包 Python 后端
 npm run build          # electron-builder 打包为 exe
 ```
 
-需要：`pip install pyinstaller psutil gputil pythonnet wmi`
+需先创建 conda 环境并安装依赖：
+```bash
+conda create -n performance-monitor python=3.11
+conda activate performance-monitor
+pip install pyinstaller psutil gputil pythonnet wmi
+```
 
 ### 📁 项目结构
 
@@ -84,7 +89,12 @@ npm run build:backend  # PyInstaller for Python backend
 npm run build          # electron-builder for portable exe
 ```
 
-Requires: `pip install pyinstaller psutil gputil pythonnet wmi`
+Requires conda env with dependencies:
+```bash
+conda create -n performance-monitor python=3.11
+conda activate performance-monitor
+pip install pyinstaller psutil gputil pythonnet wmi
+```
 
 ### 📁 Project Structure
 

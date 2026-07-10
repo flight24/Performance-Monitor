@@ -5,7 +5,7 @@
   "main": "app/main.js",
   "scripts": {
     "start": "electron .",
-    "build:backend": "pyinstaller --distpath python/dist python/monitor.spec",
+    "build:backend": "conda run -n performance-monitor pyinstaller --distpath python/dist python/monitor.spec",
     "build": "npm run build:backend && electron-builder"
   },
   "build": {
