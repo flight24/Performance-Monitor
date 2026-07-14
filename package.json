@@ -1,0 +1,52 @@
+{
+  "name": "system-monitor-widget",
+  "version": "1.0.0",
+  "private": true,
+  "main": "app/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:backend": "conda run -n performance-monitor pyinstaller --distpath python/dist python/monitor.spec",
+    "build": "npm run build:backend && electron-builder"
+  },
+  "build": {
+    "appId": "com.system.monitor",
+    "productName": "系统监控",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "app/main.js",
+      "app/preload.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "app/index.html",
+        "to": "app.html"
+      },
+      {
+        "from": "python/dist/monitor_backend.exe",
+        "to": "monitor_backend.exe"
+      }
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "app/icon.ico",
+      "sign": false,
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "monitor-tmp.exe",
+      "requestExecutionLevel": "admin"
+    },
+    "asar": false
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0",
+    "rcedit": "^4.0.0",
+    "sharp": "^0.35.3",
+    "to-ico": "^1.1.5"
+  }
+}
