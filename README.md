@@ -8,111 +8,119 @@ A sleek desktop widget for real-time hardware monitoring on Windows.
 
 
 
-**性能监视器** — 轻量级桌面硬件监控工具，实时掌握你的电脑状态。
+**WPF 原生实现**：LibreHardwareMonitorLib + PDH + WMI 直接采集，
+DWM 毛玻璃 + 自绘色调，单进程单 exe。
 
-### ✨ 功能
+## ✨ 功能
 
 | 指标 📊 | 来源 🔧 |
 |---|---|
-| CPU 使用率 / 频率 / 温度 / 电压 🔥 | psutil / PDH / WMI / LibreHardwareMonitor |
-| GPU 使用率 / 温度 / 显存 🎮 | GPUtil (NVIDIA) → PDH → LHM → WMI |
-| 内存使用率 🧠 | psutil |
-| 磁盘使用率 / I/O 💾 | psutil |
-| 网络上下行 / 占用率 🔄 | psutil |
+| CPU 使用率 / 频率 / 温度 / 电压 🔥 | PDH → LibreHardwareMonitor → WMI |
+| GPU 使用率 / 温度 / 显存 🎮 | PDH (GPU Engine) → LHM → WMI |
+| 内存使用率 🧠 | GlobalMemoryStatusEx |
+| 磁盘使用率 / I/O 💾 | DriveInfo / PDH |
+| 网络上下行 / 占用率 🔄 | PDH（按网卡实例成对统计） |
 
-- 🪟 毛玻璃 / 亚克力视觉效果
-- ⬆️ 窗口置顶、隐藏任务栏
-- 🖱️ 拖拽移动
-- 🚀 开机自启（注册表 / Electron LoginItem）
-- 📌 一键置顶开关
+- 🪟 半透明毛玻璃（`ACCENT_ENABLE_BLURBEHIND`，色调自绘）
+- ⬆️ 窗口置顶开关 / 隐藏任务栏 / 拖拽移动 / 位置记忆
+- 🚀 开机自启（schtasks 计划任务，最高权限）
+- 🛡️ 管理员清单（读取温度传感器需要）
+- 🖥️ 兼容 Win10（旧版接口回退）与 Win11 24H2+
 
-### 🏗️ 构建
+## 🏗️ 构建
 
-```bash
-npm install
-npm run build:backend  # PyInstaller 打包 Python 后端
-npm run build          # electron-builder 打包为 exe
+```powershell
+.\build-wpf.ps1          # 自包含单文件 exe（无需安装 .NET 运行时）
+.\build-wpf.ps1 -Lite    # 轻量版（需系统安装 .NET 9 Desktop Runtime）
 ```
 
-需先创建 conda 环境并安装依赖：
-```bash
-conda create -n performance-monitor python=3.11
-conda activate performance-monitor
-pip install pyinstaller psutil gputil pythonnet wmi
-```
+产物：`dist\PerformanceMonitor.exe`（自包含版约 58MB，Lite 版 <1MB）。
 
-### 📁 项目结构
+要求：.NET 9 SDK（`dotnet --list-sdks` 检查）。依赖 NuGet 包
+`LibreHardwareMonitorLib`、`System.Management` 还原时自动拉取。
+
+## 📁 项目结构
 
 ```
-├── app/                  🎨 Electron 前端
-│   ├── main.js           ⚙️ 主进程（窗口、子进程管理、IPC）
-│   ├── preload.js        🔗 安全桥接
-│   └── index.html        🖌️ 渲染器（SVG 环形表盘 + 毛玻璃）
-├── python/
-│   ├── monitor.py        📡 Python 数据采集后端（三线程架构）
-│   ├── monitor.spec      📦 PyInstaller 打包配置
-│   └── embed-manifest.py 🔧 嵌入式清单工具（备用）
-├── dll/                  📚 LibreHardwareMonitorLib & HidSharp（.NET 传感器库）
-├── scripts/
-│   ├── embed-admin.js    🛡️ afterPack 钩子：嵌入管理员 UAC 清单
-│   ├── embed-manifest.ps1🔧 PowerShell 清单嵌入脚本
-│   ├── build-backend.ps1 📦 一键编译脚本
-│   └── set-admin.ps1     🛡️ 备用管理员请求脚本
-├── package.json          📋 项目配置（electron-builder + requestExecutionLevel）
+├── PerformanceMonitor.Wpf/        🎨 WPF 主项目
+│   ├── MainWindow.xaml(.cs)       🪟 毛玻璃窗口、拖拽、按钮、数据循环
+│   ├── Controls/GaugeRing.xaml    ⭕ 环形表盘控件（虚线弧 + 缓动动画，RingSize 可调）
+│   ├── Services/
+│   │   ├── HardwareMonitorService.cs 📡 数据采集（PDH→LHM→WMI 降级链）
+│   │   ├── PdhInterop.cs          🔧 PDH P/Invoke（PdhAddEnglishCounterW 免本地化）
+│   │   ├── AutoStartService.cs    🚀 schtasks 开机自启
+│   │   └── ConfigStore.cs         💾 位置/置顶配置持久化
+│   ├── app.manifest               🛡️ 管理员 UAC 清单
+│   └── icon.ico
+├── TestGlass/                     🧪 像素级视觉回归测试（白底透光率验证）
+├── TestHarness/                   🧪 采集服务控制台诊断工具
+├── build-wpf.ps1                  📦 一键发布脚本
 └── .gitignore
 ```
 
+> 💡 已知坑（改代码前必读）：
+> - `MainWindow.ApplyGlass` 里的 `CompositionTarget.BackgroundColor = Transparent` 不能删——删了 WPF 会把透明渲染成不透明黑，毛玻璃直接失效；
+> - Win11 24H2 上旧版 `ACCENT_ENABLE_ACRYLICBLURBEHIND` 会渲染纯黑，务必使用 `ACCENT_ENABLE_BLURBEHIND (3)`；
+> - PDH 计数器读取必须用 `PDH_FMT_COUNTERVALUE` 结构体封送，用 `out double` 会内存越界。
 
-**Performance Monitor** — A lightweight desktop hardware monitoring widget that keeps an eye on your PC in real time.
+---
 
-### ✨ Features
+## 🇬🇧 English
+
+# 🖥️ Performance Monitor
+
+A sleek desktop widget for real-time hardware monitoring on Windows — live CPU, GPU, memory, disk and network stats at a glance.
+
+**Native WPF implementation**: sensors are read directly via LibreHardwareMonitorLib + PDH + WMI. DWM frosted-glass blur with a self-painted tint, single process, single exe.
+
+## ✨ Features
 
 | Metric 📊 | Source 🔧 |
 |---|---|
-| CPU Usage / Frequency / Temperature / Voltage 🔥 | psutil / PDH / WMI / LibreHardwareMonitor |
-| GPU Usage / Temperature / VRAM 🎮 | GPUtil (NVIDIA) → PDH → LHM → WMI |
-| Memory Usage 🧠 | psutil |
-| Disk Usage / I/O 💾 | psutil |
-| Network Up/Down / Utilization 🔄 | psutil |
+| CPU usage / frequency / temperature / voltage 🔥 | PDH → LibreHardwareMonitor → WMI |
+| GPU usage / temperature / VRAM 🎮 | PDH (GPU Engine) → LHM → WMI |
+| Memory usage 🧠 | GlobalMemoryStatusEx |
+| Disk usage / I/O 💾 | DriveInfo / PDH |
+| Network up/down / utilization 🔄 | PDH (paired per-NIC instances) |
 
-- 🪟 Frosted glass / acrylic visual effects
-- ⬆️ Always-on-top, hidden taskbar
-- 🖱️ Drag to move
-- 🚀 Auto-start on boot (Registry / Electron LoginItem)
-- 📌 One-click pin toggle
+- 🪟 Semi-transparent frosted glass (`ACCENT_ENABLE_BLURBEHIND`, self-painted tint)
+- ⬆️ Always-on-top toggle / hidden taskbar / drag to move / position memory
+- 🚀 Auto-start on boot (schtasks scheduled task, highest privileges)
+- 🛡️ Administrator manifest (required for temperature sensors)
+- 🖥️ Compatible with Win10 (legacy fallback) and Win11 24H2+
 
-### 🏗️ Build
+## 🏗️ Build
 
-```bash
-npm install
-npm run build:backend  # PyInstaller for Python backend
-npm run build          # electron-builder for portable exe
+```powershell
+.\build-wpf.ps1          # self-contained single-file exe (no .NET runtime needed)
+.\build-wpf.ps1 -Lite    # lightweight (requires .NET 9 Desktop Runtime)
 ```
 
-Requires conda env with dependencies:
-```bash
-conda create -n performance-monitor python=3.11
-conda activate performance-monitor
-pip install pyinstaller psutil gputil pythonnet wmi
-```
+Output: `dist\PerformanceMonitor.exe` (~58MB self-contained, <1MB Lite).
 
-### 📁 Project Structure
+Requires the .NET 9 SDK (check with `dotnet --list-sdks`). NuGet packages
+(`LibreHardwareMonitorLib`, `System.Management`) are restored automatically.
+
+## 📁 Project Structure
 
 ```
-├── app/                  🎨 Electron frontend
-│   ├── main.js           ⚙️ Main process (window, child process, IPC)
-│   ├── preload.js        🔗 Secure bridge
-│   └── index.html        🖌️ Renderer (SVG ring gauges + glassmorphism)
-├── python/
-│   ├── monitor.py        📡 Python backend (3-thread architecture)
-│   ├── monitor.spec      📦 PyInstaller build config
-│   └── embed-manifest.py 🔧 Manifest embedding utility (fallback)
-├── dll/                  📚 LibreHardwareMonitorLib & HidSharp (.NET sensor libs)
-├── scripts/
-│   ├── embed-admin.js    🛡️ afterPack hook to embed UAC admin manifest
-│   ├── embed-manifest.ps1🔧 PowerShell manifest embedding script
-│   ├── build-backend.ps1 📦 One-click build script
-│   └── set-admin.ps1     🛡️ Fallback admin request script
-├── package.json          📋 Project config (electron-builder + requestExecutionLevel)
+├── PerformanceMonitor.Wpf/        🎨 Main WPF project
+│   ├── MainWindow.xaml(.cs)       🪟 Glass window, drag, buttons, data loop
+│   ├── Controls/GaugeRing.xaml    ⭕ Ring gauge control (dash arc + easing, adjustable RingSize)
+│   ├── Services/
+│   │   ├── HardwareMonitorService.cs 📡 Data collection (PDH→LHM→WMI fallback chain)
+│   │   ├── PdhInterop.cs          🔧 PDH P/Invoke (locale-independent English counters)
+│   │   ├── AutoStartService.cs    🚀 schtasks auto-start
+│   │   └── ConfigStore.cs         💾 Position/pin config persistence
+│   ├── app.manifest               🛡️ Administrator UAC manifest
+│   └── icon.ico
+├── TestGlass/                     🧪 Pixel-level visual regression test
+├── TestHarness/                   🧪 Console diagnostic tool for the sensor service
+├── build-wpf.ps1                  📦 One-click publish script
 └── .gitignore
 ```
+
+> 💡 Known pitfalls (read before modifying the code):
+> - Do **not** remove `CompositionTarget.BackgroundColor = Transparent` in `MainWindow.ApplyGlass` — without it WPF renders transparency as opaque black and the frosted glass breaks completely;
+> - On Windows 11 24H2 the legacy `ACCENT_ENABLE_ACRYLICBLURBEHIND` renders solid black — always use `ACCENT_ENABLE_BLURBEHIND (3)`;
+> - PDH counter values must be marshalled through the `PDH_FMT_COUNTERVALUE` struct; marshalling as `out double` causes a buffer overrun.
