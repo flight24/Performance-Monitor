@@ -1,0 +1,26 @@
+<UserControl x:Class="PerformanceMonitor.Wpf.Controls.GaugeRing"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid x:Name="RootGrid" Width="100" Height="100">
+        <Grid x:Name="RingGrid" Width="100" Height="100"
+              HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Bg" Width="84" Height="84" Stroke="#14FFFFFF" StrokeThickness="7" />
+            <Ellipse x:Name="Fg" Width="84" Height="84" StrokeThickness="7"
+                     StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                     StrokeDashArray="37.699 37.699" StrokeDashOffset="37.699"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+        </Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock x:Name="PctText" Text="0%" FontSize="22" FontWeight="Bold"
+                       TextAlignment="Center" Margin="0,-2,0,0"/>
+            <TextBlock x:Name="TitleText" FontSize="10" FontWeight="Bold" Opacity="0.8"
+                       TextAlignment="Center" Margin="0,4,0,0"/>
+            <TextBlock x:Name="SubText" FontSize="9" FontWeight="Bold" Opacity="0.55"
+                       TextAlignment="Center" Margin="0,2,0,0" Visibility="Collapsed"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
