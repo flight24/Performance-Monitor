@@ -1,0 +1,10 @@
+node_modules/
+dist/
+**/bin/
+**/obj/
+__pycache__/
+*.pyc
+*.pyo
+*.exe
+.DS_Store
+Thumbs.db
