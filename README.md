@@ -16,7 +16,7 @@ DWM 毛玻璃 + 自绘色调，单进程单 exe。
 | 指标 📊 | 来源 🔧 |
 |---|---|
 | CPU 使用率 / 频率 / 温度 / 电压 🔥 | PDH → LibreHardwareMonitor → WMI |
-| GPU 使用率 / 温度 / 显存 🎮 | PDH (GPU Engine) → LHM → WMI |
+| GPU 使用率 / 温度 / 显存 🎮 | LHM GPU Core → PDH → WMI |
 | 内存使用率 🧠 | GlobalMemoryStatusEx |
 | 磁盘使用率 / I/O 💾 | DriveInfo / PDH |
 | 网络上下行 / 占用率 🔄 | PDH（按网卡实例成对统计） |
@@ -78,7 +78,7 @@ A sleek desktop widget for real-time hardware monitoring on Windows — live CPU
 | Metric 📊 | Source 🔧 |
 |---|---|
 | CPU usage / frequency / temperature / voltage 🔥 | PDH → LibreHardwareMonitor → WMI |
-| GPU usage / temperature / VRAM 🎮 | PDH (GPU Engine) → LHM → WMI |
+| GPU usage / temperature / VRAM 🎮 | LHM GPU Core → PDH → WMI |
 | Memory usage 🧠 | GlobalMemoryStatusEx |
 | Disk usage / I/O 💾 | DriveInfo / PDH |
 | Network up/down / utilization 🔄 | PDH (paired per-NIC instances) |
